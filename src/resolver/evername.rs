@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::io::Cursor;
 use std::str::FromStr;
 use anyhow::{Context, Result, anyhow};
 use async_trait::async_trait;
@@ -39,9 +40,9 @@ impl EvernameResolver {
             workchain_id: 0,
             address: AccountId::from_string(ROOT_ADDRESS)?,
         });
-        let root_contract = Contract::load(abi::ROOT_ABI_JSON)?;
-        let domain_contract = Contract::load(abi::DOMAIN_ABI_JSON)?;
-        let onchain_site_contract = Contract::load(abi::ONCHAIN_SITE_ABI_JSON)?;
+        let root_contract = Contract::load(Cursor::new(abi::ROOT_ABI_JSON))?;
+        let domain_contract = Contract::load(Cursor::new(abi::DOMAIN_ABI_JSON))?;
+        let onchain_site_contract = Contract::load(Cursor::new(abi::ONCHAIN_SITE_ABI_JSON))?;
         Ok(Self {
             jrpc_transport,
             root_address,
@@ -113,7 +114,8 @@ impl EvernameResolver {
             &[
                 Token::new("answerId", TokenValue::Uint(Uint::new(0, 32))),
                 Token::new("path", TokenValue::String(address_url)),
-            ]
+            ],
+            &[]
         )?;
 
         let token = result.tokens.ok_or_else(|| anyhow!("empty output"))?
@@ -141,7 +143,8 @@ impl EvernameResolver {
             state,
             &[
                 Token::new("answerId", TokenValue::Uint(Uint::new(0, 32)))
-            ]
+            ],
+            &[]
         )?;
 
         let token = result.tokens.ok_or_else(|| anyhow!("empty output"))?
@@ -181,6 +184,7 @@ impl EvernameResolver {
         let result = function.run_local(
             &clock,
             state,
+            &[],
             &[]
         )?;
         let tokens = result.tokens.ok_or_else(|| anyhow!("empty output"))?;

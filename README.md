@@ -1,5 +1,7 @@
 # web3-resolver
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+
 `web3-resolver` is a Rust library for resolving Web3 decentralized domains:
 * [Evername](https://evername.io/) ([Everscale](https://everscale.network/) naming system, .ever-domains)
 * [Unstoppable Domains](https://unstoppabledomains.com/)
@@ -31,7 +33,7 @@ web3-resolver = { git = "https://github.com/Chums-Team/web3-resolver" }
 ### Basic Example
 
 ```rust
-use web3_resolver::Web3DomainResolver;
+use web3_resolver::{Resolver, Web3DomainResolver};
 use web3_resolver::models::{AddressTag, ResolvedDomainData};
 use std::error::Error;
 
